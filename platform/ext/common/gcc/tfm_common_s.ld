@@ -442,6 +442,9 @@ SECTIONS
     .TFM_DATA : ALIGN(4)
 #endif
     {
+        *(CodeQuickAccess)       /* CodeQuickAccess sections */ //NXP
+        *(DataQuickAccess)       /* DataQuickAccess sections */ //NXP
+
         *(.data*)
 
         . = ALIGN(4);
