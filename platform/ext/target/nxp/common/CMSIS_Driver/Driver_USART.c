@@ -23,7 +23,7 @@
 
 #include "Driver_USART.h"
 #include "board.h"
-#include "platform_base_address.h"
+#include "target_cfg.h"
 
 #ifndef ARG_UNUSED
 #define ARG_UNUSED(arg)  (void)arg
@@ -251,7 +251,6 @@ static ARM_USART_MODEM_STATUS ARM_USART_GetModemStatus(void)
     return modem_status;
 }
 
-extern ARM_DRIVER_USART Driver_USART;
 ARM_DRIVER_USART Driver_USART = {
     .GetVersion = ARM_USART_GetVersion,
     .GetCapabilities = ARM_USART_GetCapabilities,
