@@ -30,8 +30,9 @@ extern "C" {
 #define TARGET_DEBUG_LOG 0
 #endif
 
-#define TFM_DRIVER_STDIO    Driver_USART0
-#define NS_DRIVER_STDIO     Driver_USART0
+#define TFM_DRIVER_STDIO    Driver_USART
+#define NS_DRIVER_STDIO     Driver_USART
+#define USART_BASE          (USART0)
 
 /**
  * \brief Store the addresses of memory regions
