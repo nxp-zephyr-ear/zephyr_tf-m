@@ -14,7 +14,7 @@
 #include "fsl_io_mux.h"
 #include "fsl_power.h"
 #include "fsl_ocotp.h"
-// #include "mcuxClEls.h"
+#include "mcuxClEls.h"
 
 /*******************************************************************************
  * Definitions
@@ -410,52 +410,51 @@ void BOARD_SetFlexspiClock(FLEXSPI_Type *base, uint32_t src, uint32_t divider)
 
 static void LoadGdetCfg(otp_gdet_data_t *data, uint32_t pack)
 {
-    // TODO: enable this once els_pcv is available
-    // data->CFG3 = POWER_TrimSvc(data->CFG3, pack);
-    //
-    // /* GDET clock has been characterzed to 64MHz */
-    // CLKCTL0->ELS_GDET_CLK_SEL = CLKCTL0_ELS_GDET_CLK_SEL_SEL(2);
-    //
-    // /* Clear the GDET reset */
-    // RSTCTL0->PRSTCTL1_CLR = RSTCTL0_PRSTCTL1_CLR_ELS_GDET_REF_RST_N_MASK;
-    //
-    // /* Enable ELS */
-    // MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
-    // if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
-    // {
-    //     assert(false);
-    // }
-    // MCUX_CSSL_FP_FUNCTION_CALL_END();
-    //
-    // /* Wait for the mcuxClEls_Enable_Async operation to complete. */
-    // MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-    // /* mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value */
-    // if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    // {
-    //     assert(false);
-    // }
-    // MCUX_CSSL_FP_FUNCTION_CALL_END();
-    //
-    // /* LOAD command */
-    // MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GlitchDetector_LoadConfig_Async((uint8_t *)data));
-    // if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GlitchDetector_LoadConfig_Async) != token) ||
-    //     (MCUXCLELS_STATUS_OK_WAIT != result))
-    // {
-    //     assert(false);
-    // }
-    // MCUX_CSSL_FP_FUNCTION_CALL_END();
-    // /* Wait for the mcuxClEls_GlitchDetector_LoadConfig_Async operation to complete. */
-    // MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
-    // if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
-    // {
-    //     assert(false);
-    // }
-    // MCUX_CSSL_FP_FUNCTION_CALL_END();
-    //
-    // /* Wait for ELS ready */
-    // while ((ELS->ELS_STATUS & ELS_ELS_STATUS_ELS_BUSY_MASK) != 0U)
-    // {
-    // }
+    data->CFG3 = POWER_TrimSvc(data->CFG3, pack);
+    
+    /* GDET clock has been characterzed to 64MHz */
+    CLKCTL0->ELS_GDET_CLK_SEL = CLKCTL0_ELS_GDET_CLK_SEL_SEL(2);
+    
+    /* Clear the GDET reset */
+    RSTCTL0->PRSTCTL1_CLR = RSTCTL0_PRSTCTL1_CLR_ELS_GDET_REF_RST_N_MASK;
+    
+    /* Enable ELS */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        assert(false);
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    
+    /* Wait for the mcuxClEls_Enable_Async operation to complete. */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    /* mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value */
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+    {
+        assert(false);
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    
+    /* LOAD command */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GlitchDetector_LoadConfig_Async((uint8_t *)data));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GlitchDetector_LoadConfig_Async) != token) ||
+        (MCUXCLELS_STATUS_OK_WAIT != result))
+    {
+        assert(false);
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    /* Wait for the mcuxClEls_GlitchDetector_LoadConfig_Async operation to complete. */
+    MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
+    if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_WaitForOperation) != token) || (MCUXCLELS_STATUS_OK != result))
+    {
+        assert(false);
+    }
+    MCUX_CSSL_FP_FUNCTION_CALL_END();
+    
+    /* Wait for ELS ready */
+    while ((ELS->ELS_STATUS & ELS_ELS_STATUS_ELS_BUSY_MASK) != 0U)
+    {
+    }
 }
 
 static void ConfigSvcSensor(void)
