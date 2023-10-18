@@ -12,8 +12,6 @@ cmake_policy(SET CMP0076 NEW)
 message("Using nxp mcux source code from ${TFM_PLATFORM_NXP_HAL_FILE_PATH}.")
 set(NXP_HAL_FILE_PATH ${TFM_PLATFORM_NXP_HAL_FILE_PATH})
 
-set(CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
-
 string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_LOWER)
 if (BL2 AND ${BUILD_TYPE_LOWER} STREQUAL "debug")
     Message(FATAL_ERROR "If BL2 is enabled, \"${CMAKE_BUILD_TYPE}\" build type cannot be selected as it is currently not \
@@ -138,11 +136,15 @@ target_sources(platform_s
         # ${NXP_HAL_FILE_PATH}/common/plat_attest_hal.c
 )
 
+include(${CMAKE_CURRENT_BINARY_DIR}/../../../modules/hal_nxp/hal_nxp/mcux/mcux-sdk/components/els_pkc/McuxElsPkcTargets.cmake)
+
 target_link_libraries(platform_s
     PRIVATE
     # For attest HAL strnlen
         tfm_sprt
+        McuxElsPkc::McuxElsPkc
 )
+
 
 target_compile_options(platform_s
     PUBLIC
