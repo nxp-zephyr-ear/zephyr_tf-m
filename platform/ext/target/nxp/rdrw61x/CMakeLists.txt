@@ -139,6 +139,12 @@ target_sources(platform_s
 
 include(${CMAKE_CURRENT_BINARY_DIR}/../../../modules/hal_nxp/hal_nxp/mcux/mcux-sdk/components/els_pkc/McuxElsPkcTargets.cmake)
 
+# The imported library targets are not in global scope for cmake. Interestingly enough, this still lets us use them
+# in target_link_library, however getting properties of the library (like it's interface include directories) is not possible.
+# Setting this target property promotes the target to global and makes that possible.
+# See also https://cmake.org/cmake/help/latest/prop_tgt/IMPORTED_GLOBAL.html
+set_target_properties(McuxElsPkc::McuxElsPkc PROPERTIES IMPORTED_GLOBAL TRUE)
+
 target_link_libraries(platform_s
     PRIVATE
     # For attest HAL strnlen
@@ -146,7 +152,14 @@ target_link_libraries(platform_s
         McuxElsPkc::McuxElsPkc
 )
 
-
+if (MCUX_PSA_CRYPTO_DRIVER_ELS_PKC)
+include(${CMAKE_CURRENT_BINARY_DIR}/../../../modules/hal_nxp/hal_nxp/mcux/mcux-sdk/components/psa_crypto_driver/McuxPsaCryptoDriverElsPkcTargets.cmake)
+set_target_properties(McuxPsaCryptoDriverElsPkc::McuxPsaCryptoDriverElsPkc PROPERTIES IMPORTED_GLOBAL TRUE)
+target_link_libraries(platform_s
+    PRIVATE
+        McuxPsaCryptoDriverElsPkc::McuxPsaCryptoDriverElsPkc
+)
+endif()
 target_compile_options(platform_s
     PUBLIC
         ${COMPILER_CMSE_FLAG}
@@ -197,6 +210,62 @@ target_sources(platform_ns
 )
 
 
+#========================= Platform customizations ============================================#
+
+if (TFM_PARTITION_CRYPTO)
+
+    target_compile_options(platform_crypto_keys
+        PUBLIC
+            ${COMPILER_CMSE_FLAG}
+    )
+
+    target_sources(platform_crypto_keys
+        PRIVATE
+            crypto_keys.c
+    )
+
+    target_include_directories(platform_crypto_keys
+        PUBLIC
+            ./Device/Include
+            ./Device/Config
+            # platform_crypto_keys does not link against els_pkc and PsaCryptoDriverElsPkc, but we need to include it's
+            # header files to have the function declarations, typedefs and defines available.
+            # Those directories are declared in the included library cmake file and can be
+            # used here:
+            "$<TARGET_PROPERTY:McuxElsPkc::McuxElsPkc,INTERFACE_INCLUDE_DIRECTORIES>"
+    )
+
+    target_compile_definitions(platform_crypto_keys
+        PUBLIC
+            $<$<BOOL:${USE_ELS_PKC_HUK}>:USE_ELS_PKC_HUK>
+    )
+if (MCUX_PSA_CRYPTO_DRIVER_ELS_PKC)
+
+    target_include_directories(platform_crypto_keys
+        PUBLIC
+            "$<TARGET_PROPERTY:McuxPsaCryptoDriverElsPkc::McuxPsaCryptoDriverElsPkc,INTERFACE_INCLUDE_DIRECTORIES>"
+    )
+    target_include_directories(tfm_psa_rot_partition_crypto
+        PUBLIC
+            # tfm_psa_rot_partition_crypto does not link against PsaCryptoDriverElsPkc directly, but we need to include it's
+            # header files to have the function declarations, typedefs and defines available.
+            # Those directories are declared in the included library cmake file and can be used here:
+            "$<TARGET_PROPERTY:McuxPsaCryptoDriverElsPkc::McuxPsaCryptoDriverElsPkc,INTERFACE_INCLUDE_DIRECTORIES>"
+    )
+    target_include_directories(crypto_service_mbedcrypto
+        PUBLIC
+            # crypto_service_mbedcrypto does not link against PsaCryptoDriverElsPkc directly, but we need to include it's
+            # header files to have the function declarations, typedefs and defines available.
+            # Those directories are declared in the included library cmake file and can be used here:
+            "$<TARGET_PROPERTY:McuxPsaCryptoDriverElsPkc::McuxPsaCryptoDriverElsPkc,INTERFACE_INCLUDE_DIRECTORIES>"
+    )
+
+    target_compile_definitions(crypto_service_mbedcrypto
+        PUBLIC
+            $<$<BOOL:${MCUX_PSA_CRYPTO_DRIVER_ELS_PKC}>:PSA_CRYPTO_DRIVER_ELS_PKC>
+    )
+endif()
+endif()
 #========================= tfm_spm ============================================#
 
 target_sources(tfm_spm
