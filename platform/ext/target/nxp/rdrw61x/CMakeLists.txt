@@ -18,6 +18,13 @@ if (BL2 AND ${BUILD_TYPE_LOWER} STREQUAL "debug")
                          supported on ${TFM_PLATFORM}. For more information please refer to the platform's README file.")
 endif()
 
+set(HARDENING_COMPILE_DEFINITION "HARDENING_MACROS_ENABLED")
+if (DEFINED USE_HARDENED_PLATFORM_INIT)
+    if(NOT ${USE_HARDENED_PLATFORM_INIT})
+        set(HARDENING_COMPILE_DEFINITION "")
+    endif()
+endif()
+
 #========================= Platform region defs ===============================#
 
 target_include_directories(platform_region_defs
@@ -57,6 +64,7 @@ endif()
 target_compile_definitions(platform_s
     PUBLIC
         FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1
+        ${HARDENING_COMPILE_DEFINITION}
 )
 
 target_include_directories(platform_s
@@ -177,6 +185,11 @@ target_sources(tfm_s
 
 #========================= Platform Non-Secure ================================#
 
+target_compile_definitions(platform_ns
+    PUBLIC
+        ${HARDENING_COMPILE_DEFINITION}
+)
+
 target_include_directories(platform_ns
     PUBLIC
         .
@@ -272,8 +285,8 @@ target_sources(tfm_spm
     PRIVATE
         target_cfg.c
         ../common/faults.c
-        ../common/tfm_hal_isolation.c
-        ../common/tfm_hal_platform.c
+        tfm_hal_isolation.c
+        tfm_hal_platform.c
 )
 
 
