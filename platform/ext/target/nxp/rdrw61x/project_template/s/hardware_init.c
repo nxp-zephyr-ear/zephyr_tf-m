@@ -24,6 +24,8 @@ void BOARD_InitHardware(void)
 
     CLOCK_EnableClock(kCLOCK_Flexspi);
     RESET_ClearPeripheralReset(kFLEXSPI_RST_SHIFT_RSTn);
+
+    BOARD_InitTrng();
 }
 
 void SystemInitHook(void)
