@@ -332,6 +332,15 @@
 #define MBEDTLS_ENTROPY_C
 
 /**
+ * \def MBEDTLS_ENTROPY_HARDWARE_ALT
+ *
+ * Enable alt implementation for entropy in order
+ * to use platform specific TRNG.
+ *
+ */
+#define MBEDTLS_ENTROPY_HARDWARE_ALT
+
+/**
  * \def MBEDTLS_ERROR_C
  *
  * Enable error code to error string conversion.

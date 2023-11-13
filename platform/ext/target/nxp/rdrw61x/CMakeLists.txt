@@ -93,6 +93,7 @@ target_include_directories(platform_s
         ${NXP_HAL_FILE_PATH}/drivers/cache/cache64
         ${NXP_HAL_FILE_PATH}/drivers/flexcomm
         ${NXP_HAL_FILE_PATH}/drivers/flexspi
+        ${NXP_HAL_FILE_PATH}/drivers/trng
 
         ${NXP_HAL_FILE_PATH}/components/lists
         ${NXP_HAL_FILE_PATH}/components/serial_manager
@@ -109,6 +110,7 @@ target_sources(platform_s
         project_template/s/board.c
         project_template/s/clock_config.c
         project_template/s/pin_mux.c
+        mbedtls_entropy.c
 
         ${PLATFORM_DIR}/ext/target/nxp/rdrw61x/CMSIS_Driver/Driver_Flash_iap_rw61x.c
         ${PLATFORM_DIR}/ext/target/nxp/rdrw61x/CMSIS_Driver/Driver_Flash_iap_rw61x_iped.c
@@ -135,6 +137,7 @@ target_sources(platform_s
         ${NXP_HAL_FILE_PATH}/drivers/flexcomm/fsl_usart.c
         ${NXP_HAL_FILE_PATH}/drivers/cache/cache64/fsl_cache.c
         ${NXP_HAL_FILE_PATH}/drivers/flexspi/fsl_flexspi.c
+        ${NXP_HAL_FILE_PATH}/drivers/trng/fsl_trng.c
 
         ${NXP_HAL_FILE_PATH}/utilities/assert/fsl_assert.c
         ${NXP_HAL_FILE_PATH}/utilities/debug_console/fsl_debug_console.c

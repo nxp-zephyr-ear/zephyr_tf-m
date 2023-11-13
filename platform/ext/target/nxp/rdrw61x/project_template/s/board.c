@@ -10,6 +10,7 @@
 #include "fsl_clock.h"
 #include "board.h"
 #include "fsl_flexspi.h"
+#include "fsl_trng.h"
 #include "fsl_cache.h"
 #include "fsl_io_mux.h"
 #include "fsl_power.h"
@@ -411,13 +412,13 @@ void BOARD_SetFlexspiClock(FLEXSPI_Type *base, uint32_t src, uint32_t divider)
 static void LoadGdetCfg(otp_gdet_data_t *data, uint32_t pack)
 {
     data->CFG3 = POWER_TrimSvc(data->CFG3, pack);
-    
+
     /* GDET clock has been characterzed to 64MHz */
     CLKCTL0->ELS_GDET_CLK_SEL = CLKCTL0_ELS_GDET_CLK_SEL_SEL(2);
-    
+
     /* Clear the GDET reset */
     RSTCTL0->PRSTCTL1_CLR = RSTCTL0_PRSTCTL1_CLR_ELS_GDET_REF_RST_N_MASK;
-    
+
     /* Enable ELS */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_Enable_Async());
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_Enable_Async) != token) || (MCUXCLELS_STATUS_OK_WAIT != result))
@@ -425,7 +426,7 @@ static void LoadGdetCfg(otp_gdet_data_t *data, uint32_t pack)
         assert(false);
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    
+
     /* Wait for the mcuxClEls_Enable_Async operation to complete. */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_WaitForOperation(MCUXCLELS_ERROR_FLAGS_CLEAR));
     /* mcuxClEls_WaitForOperation is a flow-protected function: Check the protection token and the return value */
@@ -434,7 +435,7 @@ static void LoadGdetCfg(otp_gdet_data_t *data, uint32_t pack)
         assert(false);
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    
+
     /* LOAD command */
     MCUX_CSSL_FP_FUNCTION_CALL_BEGIN(result, token, mcuxClEls_GlitchDetector_LoadConfig_Async((uint8_t *)data));
     if ((MCUX_CSSL_FP_FUNCTION_CALLED(mcuxClEls_GlitchDetector_LoadConfig_Async) != token) ||
@@ -450,7 +451,7 @@ static void LoadGdetCfg(otp_gdet_data_t *data, uint32_t pack)
         assert(false);
     }
     MCUX_CSSL_FP_FUNCTION_CALL_END();
-    
+
     /* Wait for ELS ready */
     while ((ELS->ELS_STATUS & ELS_ELS_STATUS_ELS_BUSY_MASK) != 0U)
     {
@@ -509,6 +510,17 @@ static void ConfigSvcSensor(void)
         SDK_DelayAtLeastUs(600, SystemCoreClock);
     }
     POWER_EnableGDetVSensors();
+}
+
+
+void BOARD_InitTrng(void)
+{
+    trng_config_t trngConfig;
+
+    TRNG_GetDefaultConfig(&trngConfig);
+    /* Set sample mode of the TRNG ring oscillator to Von Neumann, for better random data.*/
+    /* Initialize TRNG */
+    TRNG_Init(TRNG, &trngConfig);
 }
 
 /* This function is used to configure static voltage compansation and sensors, and in XIP case, change FlexSPI clock
