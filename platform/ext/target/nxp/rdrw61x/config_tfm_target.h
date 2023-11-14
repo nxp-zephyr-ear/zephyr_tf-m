@@ -9,6 +9,7 @@
 #ifndef __CONFIG_TFM_TARGET_H__
 #define __CONFIG_TFM_TARGET_H__
 
+
 /* Using of stored NV seed to provide entropy is disabled, when CRYPTO_HW_ACCELERATOR is defined.  */
 #ifdef CRYPTO_HW_ACCELERATOR
 #undef CRYPTO_NV_SEED
@@ -37,5 +38,11 @@
 #undef PS_RAM_FS
 #define PS_RAM_FS            1
 #endif /* PLATFORM_NO_FLASH */
+
+/* els_pkc lib requires this for rsa key generation. */
+#if CRYPTO_STACK_SIZE < 0x2000
+#undef CRYPTO_STACK_SIZE
+#define CRYPTO_STACK_SIZE 0x2000
+#endif
 
 #endif /* __CONFIG_TFM_TARGET_H__ */
