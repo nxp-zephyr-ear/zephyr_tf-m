@@ -143,6 +143,8 @@ target_sources(platform_s
         ${NXP_HAL_FILE_PATH}/utilities/debug_console/fsl_debug_console.c
         ${NXP_HAL_FILE_PATH}/utilities/str/fsl_str.c
 
+        $<$<NOT:$<BOOL:${PLATFORM_DEFAULT_NV_COUNTERS}>>:${PLATFORM_DIR}/ext/target/nxp/rdrw61x/nv_counters.c>
+
         $<$<BOOL:${TFM_PARTITION_PLATFORM}>:${PLATFORM_DIR}/ext/target/nxp/common/plat_test.c>
         $<$<BOOL:${TFM_PARTITION_PLATFORM}>:${PLATFORM_DIR}/ext/target/nxp/common/services/src/tfm_platform_system.c>
         # ${NXP_HAL_FILE_PATH}/common/plat_attest_hal.c
