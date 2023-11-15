@@ -254,6 +254,7 @@ if (TFM_PARTITION_CRYPTO)
     target_compile_definitions(platform_crypto_keys
         PUBLIC
             $<$<BOOL:${USE_ELS_PKC_HUK}>:USE_ELS_PKC_HUK>
+            $<$<BOOL:${USE_ELS_PKC_IAK}>:USE_ELS_PKC_IAK>
     )
 if (MCUX_PSA_CRYPTO_DRIVER_ELS_PKC)
 
