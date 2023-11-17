@@ -275,3 +275,11 @@ target_sources(tfm_spm
         ../common/tfm_hal_isolation.c
         ../common/tfm_hal_platform.c
 )
+
+
+#========================= Install platform specific interface files ===============================#
+
+install(FILES
+    ${CMAKE_CURRENT_LIST_DIR}/Device/Include/tfm_builtin_key_ids.h
+    DESTINATION "${TFM_INSTALL_PATH}/interface/include"
+)
