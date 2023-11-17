@@ -129,7 +129,7 @@
  * in the internal flash, but is allocated in the external flash just for development platforms that don't have
  * internal flash available.
  */
-#define TFM_HAL_ITS_FLASH_DRIVER        (Driver_FLASH0)
+#define TFM_HAL_ITS_FLASH_DRIVER        (Driver_FLASH0_IPED)
 
 
 /* In this target the CMSIS driver requires only the offset from the base address instead of the full memory
@@ -139,7 +139,7 @@
 #define TFM_HAL_ITS_FLASH_AREA_ADDR     (FLASH_ITS_AREA_OFFSET)
 
 /* Size of dedicated flash area for ITS */
-#define FLASH_AREA_ITS_SECTOR_SIZE      (FLASH_AREA_IMAGE_SECTOR_SIZE)
+#define FLASH_AREA_ITS_SECTOR_SIZE      ((FLASH_AREA_IMAGE_SECTOR_SIZE - FLASH_AREA_PROGRAM_SIZE) / 5 * 4)
 #define TFM_HAL_ITS_FLASH_AREA_SIZE     ((FLASH_ITS_AREA_SIZE / FLASH_AREA_IMAGE_SECTOR_SIZE) * FLASH_AREA_ITS_SECTOR_SIZE)
 #define ITS_RAM_FS_SIZE                 (TFM_HAL_ITS_FLASH_AREA_SIZE)
 
@@ -147,14 +147,17 @@
 #define TFM_HAL_ITS_SECTORS_PER_BLOCK   (1)
 
 /* Smallest flash programmable unit in bytes */
-#define TFM_HAL_ITS_PROGRAM_UNIT        (FLASH_AREA_PROGRAM_SIZE)
+#define TFM_HAL_ITS_PROGRAM_UNIT        (FLASH_AREA_ITS_SECTOR_SIZE)
 #define ITS_FLASH_NAND_BUF_SIZE         (FLASH_AREA_ITS_SECTOR_SIZE * TFM_HAL_ITS_SECTORS_PER_BLOCK)
 
 /* OTP / NV counter definitions */
+#define OTP_NV_COUNTERS_FLASH_DEV               (Driver_FLASH0)
+
 #define TFM_OTP_NV_COUNTERS_AREA_SIZE           (FLASH_OTP_NV_COUNTERS_AREA_SIZE / 2)
 #define TFM_OTP_NV_COUNTERS_AREA_ADDR           (FLASH_OTP_NV_COUNTERS_AREA_OFFSET)
 #define TFM_OTP_NV_COUNTERS_SECTOR_SIZE         (FLASH_OTP_NV_COUNTERS_SECTOR_SIZE)
 #define TFM_OTP_NV_COUNTERS_BACKUP_AREA_ADDR    (TFM_OTP_NV_COUNTERS_AREA_ADDR + TFM_OTP_NV_COUNTERS_AREA_SIZE)
+#define OTP_NV_COUNTERS_WRITE_BLOCK_SIZE        (FLASH_AREA_PROGRAM_SIZE)
 
 #define TFM_WIFI_FIRMWARE_ADDR  (0x08400000)
 #define TFM_WIFI_FIRMWARE_SIZE  (0x000A0000)

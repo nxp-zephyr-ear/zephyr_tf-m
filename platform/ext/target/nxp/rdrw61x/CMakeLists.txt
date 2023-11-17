@@ -86,7 +86,6 @@ target_include_directories(platform_s
         ${NXP_HAL_FILE_PATH}/drivers/flexcomm
         ${NXP_HAL_FILE_PATH}/drivers/flexspi
 
-
         ${NXP_HAL_FILE_PATH}/components/lists
         ${NXP_HAL_FILE_PATH}/components/serial_manager
         ${NXP_HAL_FILE_PATH}/components/uart
@@ -104,9 +103,11 @@ target_sources(platform_s
         project_template/s/pin_mux.c
 
         ${PLATFORM_DIR}/ext/target/nxp/rdrw61x/CMSIS_Driver/Driver_Flash_iap_rw61x.c
+        ${PLATFORM_DIR}/ext/target/nxp/rdrw61x/CMSIS_Driver/Driver_Flash_iap_rw61x_iped.c
 
         ${NXP_HAL_FILE_PATH}/devices/RW612/system_RW612.c
         ${NXP_HAL_FILE_PATH}/devices/RW612/drivers/fsl_clock.c
+        ${NXP_HAL_FILE_PATH}/devices/RW612/drivers/fsl_iped.c
         ${NXP_HAL_FILE_PATH}/devices/RW612/drivers/fsl_power.c
         ${NXP_HAL_FILE_PATH}/devices/RW612/drivers/fsl_reset.c
         ${NXP_HAL_FILE_PATH}/devices/RW612/drivers/fsl_ocotp.c
