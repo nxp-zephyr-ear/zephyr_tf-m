@@ -39,14 +39,31 @@ target_include_directories(platform_region_defs
 
 #========================= Platform common defs ===============================#
 
+target_compile_definitions(tfm_s
+    PUBLIC
+        BOOT_HEADER_ENABLE=1
+    )
+
 # Specify the location of platform specific build dependencies.
 target_sources(tfm_s
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/startup_rdrw61x.c
 )
+
+# Provide with the flash config files for rw61x
+target_sources(tfm_s
+    PUBLIC
+        ${NXP_HAL_FILE_PATH}/boards/rdrw612bga/flash_config/flash_config.c
+)
+
+target_include_directories(tfm_s
+    PUBLIC
+        ${NXP_HAL_FILE_PATH}/boards/rdrw612bga/flash_config/
+)
+
 target_add_scatter_file(tfm_s
-    $<$<C_COMPILER_ID:GNU>:${CMAKE_SOURCE_DIR}/platform/ext/common/gcc/tfm_common_s.ld>
-    $<$<C_COMPILER_ID:IAR>:${CMAKE_SOURCE_DIR}/platform/ext/common/iar/tfm_common_s.icf>
+    $<$<C_COMPILER_ID:GNU>:${CMAKE_SOURCE_DIR}/platform/ext/target/nxp/common/gcc/tfm_common_s.ld>
+    $<$<C_COMPILER_ID:IAR>:${CMAKE_SOURCE_DIR}/platform/ext/target/nxp/common/iar/tfm_common_s.icf>
 )
 
 if(NS)
@@ -55,8 +72,8 @@ if(NS)
             ${CMAKE_CURRENT_SOURCE_DIR}/Device/Source/startup_rdrw61x.c
     )
     target_add_scatter_file(tfm_ns
-        $<$<C_COMPILER_ID:GNU>:${CMAKE_SOURCE_DIR}/platform/ext/common/gcc/tfm_common_ns.ld>
-        $<$<C_COMPILER_ID:IAR>:${CMAKE_SOURCE_DIR}/platform/ext/common/iar/tfm_common_ns.icf>
+        $<$<C_COMPILER_ID:GNU>:${CMAKE_SOURCE_DIR}/platform/ext/target/nxp/common/gcc/tfm_common_ns.ld>
+        $<$<C_COMPILER_ID:IAR>:${CMAKE_SOURCE_DIR}/platform/ext/target/nxp/common/iar/tfm_common_ns.icf>
     )
     target_link_libraries(CMSIS_5_tfm_ns
         INTERFACE
