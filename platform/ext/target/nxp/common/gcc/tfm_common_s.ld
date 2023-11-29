@@ -31,6 +31,10 @@
 
 MEMORY
 {
+#ifdef M_BOOT_FLASH_CONF_START             //NXP
+/* Flash configuration block(FCB) is used to configure the FlexSPI interface during the boot process. */
+  m_flash_config        (RX)  : ORIGIN = M_BOOT_FLASH_CONF_START, LENGTH = M_BOOT_FLASH_CONF_SIZE     //NXP
+#endif
   FLASH    (rx)  : ORIGIN = S_CODE_START, LENGTH = S_CODE_SIZE
   RAM      (rwx) : ORIGIN = S_DATA_START, LENGTH = S_DATA_SIZE
 #if defined(S_RAM_CODE_START)
@@ -72,6 +76,18 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
+// --------- NXP --------------
+#ifdef M_BOOT_FLASH_CONF_START
+    .flash_config :
+    {
+      . = ALIGN(4);
+      __FLASH_BASE = .;
+      KEEP(* (.flash_conf))     /* flash config section */
+      . = ALIGN(4);
+    } > m_flash_config
+#endif
+// --------- NXP end --------------
+
     .TFM_VECTORS : ALIGN(4)
     {
         __vectors_start__ = .;
@@ -443,7 +459,8 @@ SECTIONS
     .TFM_DATA ALIGN(4) :
 #endif
     {
-
+        *(SORT_BY_ALIGNMENT(CodeQuickAccess))       /* CodeQuickAccess sections */ //NXP
+        *(SORT_BY_ALIGNMENT(DataQuickAccess))       /* DataQuickAccess sections */ //NXP
         *(SORT_BY_ALIGNMENT(.data*))
 
         . = ALIGN(4);
