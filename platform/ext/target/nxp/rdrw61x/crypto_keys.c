@@ -16,6 +16,7 @@
  */
 
 #include <string.h>
+#include "fsl_device_registers.h"
 #include "tfm_plat_crypto_keys.h"
 #include "tfm_builtin_key_ids.h"
 #include "tfm_plat_otp.h"

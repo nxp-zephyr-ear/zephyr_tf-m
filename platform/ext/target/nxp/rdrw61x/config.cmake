@@ -14,6 +14,11 @@ set(TFM_MULTI_CORE_TOPOLOGY             OFF             CACHE BOOL      "Whether
 set(ITS_RAM_FS ON CACHE BOOL "")
 set(PS_RAM_FS ON CACHE BOOL "")
 
+################################## Adding Platform Specific Partition ################################
+set(TFM_EXTRA_MANIFEST_LIST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/platform/ext/target/nxp/rdrw61x/partitions/tfm_manifest_list.yaml;"  CACHE PATH "Path to extra generated file list. Appended to stardard TFM generated file list." FORCE)
+
+set(TFM_EXTRA_PARTITION_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/platform/ext/target/nxp/rdrw61x/partitions/loader_service;"  CACHE PATH "Path to extra generated file list. Appended to stardard TFM generated file list." FORCE)
+
 ################################## Dependencies ################################
 # set(TFM_PLATFORM_NXP_HAL_FILE_PATH      "DOWNLOAD"      CACHE STRING    "Path to the NXP SDK hal (or DOWNLOAD to fetch automatically)")
 # set(NXP_SDK_GIT_TAG                     "MCUX_2.10.0"   CACHE STRING    "The version of the NXP MCUXpresso SDK")

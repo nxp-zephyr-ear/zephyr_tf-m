@@ -243,7 +243,13 @@ target_sources(platform_ns
         $<$<BOOL:${TFM_PARTITION_PLATFORM}>:${PLATFORM_DIR}/ext/target/nxp/common/plat_test.c>
 )
 
-
+if (TFM_PARTITION_LOADER_SERVICE)
+# link public api of loader service api with ns platform
+target_link_libraries(platform_ns
+    PUBLIC
+        tfm_psa_rot_partition_lds_ns
+)
+endif()
 #========================= Platform customizations ============================================#
 
 if (TFM_PARTITION_CRYPTO)
