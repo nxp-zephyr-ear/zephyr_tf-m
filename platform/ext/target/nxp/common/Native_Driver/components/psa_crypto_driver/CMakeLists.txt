@@ -80,7 +80,6 @@ if(CONFIG_BUILD_WITH_TFM)
             # The builtin key for initial attestation is only included if TF-M is 
             # built with initial attestation support enabled.
             $<$<BOOL:TFM_PARTITION_INITIAL_ATTESTATION>:TFM_PARTITION_INITIAL_ATTESTATION>
-            $<$<BOOL:${TFM_MBEDCRYPTO_PSA_CRYPTO_CONFIG_PATH}>:MBEDTLS_PSA_CRYPTO_CONFIG>
             MBEDTLS_CONFIG_FILE="${TFM_MBEDCRYPTO_CONFIG_PATH}"
             MBEDTLS_PSA_CRYPTO_CONFIG_FILE="${TFM_MBEDCRYPTO_PSA_CRYPTO_CONFIG_PATH}"
     )

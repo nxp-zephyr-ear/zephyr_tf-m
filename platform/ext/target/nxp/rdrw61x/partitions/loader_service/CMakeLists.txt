@@ -14,12 +14,10 @@ cmake_policy(SET CMP0079 NEW)
 
 
 message("Adding tf-m loader service partition")
-
 # Set the paths variables to be used later on in cmake
-set(NXP_HAL_FILE_PATH ${TFM_PLATFORM_NXP_HAL_FILE_PATH})
-set(INSTALL_INTERFACE_INC_DIR    ${TFM_INSTALL_PATH}/interface/include)
-set(INSTALL_INTERFACE_SRC_DIR    ${TFM_INSTALL_PATH}/interface/src)
-set(NXP_CONN_FW_PATH             ${NXP_HAL_FILE_PATH}/components/conn_fwloader)
+set(NXP_HAL_FILE_PATH   ${TFM_PLATFORM_NXP_HAL_FILE_PATH})
+set(NXP_CONN_FW_PATH    ${NXP_HAL_FILE_PATH}/rdrw61x/Native_Driver/components/conn_fwloader/)
+#${NXP_HAL_FILE_PATH}/components/conn_fwloader)
 
 # The name of the target is required to be of the pattern
 # tfm_app_rot_partition_x or tfm_psa_rot_partition_x, as it affects how the
@@ -46,8 +44,6 @@ target_sources(tfm_partitions
     INTERFACE
         ${CMAKE_BINARY_DIR}/generated/secure_fw/partitions/loader_service/auto_generated/load_info_tfm_loader_service.c
 )
-
-#add_subdirectory(${NXP_CONN_FW_PATH}/conn_fwloader)
 
 target_include_directories(tfm_psa_rot_partition_lds
     PUBLIC
@@ -87,7 +83,7 @@ target_include_directories(tfm_sprt
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${INTERFACE_INC_DIR}
         ${NXP_CONN_FW_PATH}/include
-        ${NXP_HAL_FILE_PATH}/components/osa
+        ${NXP_HAL_FILE_PATH}/rdrw61x/Native_Driver/components/osa
 )
 
 ############################ Non-secure API ####################################
@@ -126,6 +122,7 @@ install(FILES       ${INTERFACE_SRC_DIR}/tfm_lds_api.c
 install(FILES       ${CMAKE_CURRENT_SOURCE_DIR}/tfm_lds_config.h
                     ${CMAKE_CURRENT_SOURCE_DIR}/tfm_lds_func_ids.h
         DESTINATION ${INSTALL_INTERFACE_INC_DIR})
-        
+
 install(FILES       ${INTERFACE_INC_DIR}/tfm_lds_defs.h
+                    ${NXP_CONN_FW_PATH}/include/fsl_loader.h
         DESTINATION ${INSTALL_INTERFACE_INC_DIR})

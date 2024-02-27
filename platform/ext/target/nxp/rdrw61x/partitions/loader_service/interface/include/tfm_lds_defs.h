@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-#include "tfm_api.h"
+#include "tfm_veneers.h"
 /* include the public api of conn_fw loader service apis*/
 #include "fsl_loader.h"
 

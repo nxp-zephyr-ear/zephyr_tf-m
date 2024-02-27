@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2021-2023, Arm Limited. All rights reserved.
+ * Copyright 2024 NXP.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -8,7 +9,7 @@
 #include "config_tfm.h"
 #include "tfm_platform_api.h"
 #include "service_api.h"
-#include "tfm_api.h"
+#include "tfm_veneers.h"
 #include "psa/service.h"
 #include "compiler_ext_defs.h"
 #include "tfm_lds_req_mngr.h"
