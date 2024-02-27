@@ -16,17 +16,29 @@
 #define CRYPTO_NV_SEED                         0
 #endif
 
+/* Heap size for the crypto backend */
+#undef CRYPTO_ENGINE_BUF_SIZE
+#define CRYPTO_ENGINE_BUF_SIZE                 0x4000
+
+/* Default size of the internal scratch buffer used for PSA FF IOVec allocations */
+#undef CRYPTO_IOVEC_BUFFER_SIZE
+#define CRYPTO_IOVEC_BUFFER_SIZE               33000
+
+/* The maximum asset size to be stored in the Internal Trusted Storage */
+#undef ITS_MAX_ASSET_SIZE
+#define ITS_MAX_ASSET_SIZE                     0xB80
+
 /* The maximum asset size to be stored in the Protected Storage area. */
 #undef PS_MAX_ASSET_SIZE
-#define PS_MAX_ASSET_SIZE    512
+#define PS_MAX_ASSET_SIZE    2048
 
 /* The maximum number of assets to be stored in the Protected Storage area. */
 #undef PS_NUM_ASSETS
-#define PS_NUM_ASSETS        5
+#define PS_NUM_ASSETS        10
 
 /* The maximum number of assets to be stored in the Internal Trusted Storage */
 #undef ITS_NUM_ASSETS
-#define ITS_NUM_ASSETS       5
+#define ITS_NUM_ASSETS       10
 
 
 #ifdef PLATFORM_NO_FLASH

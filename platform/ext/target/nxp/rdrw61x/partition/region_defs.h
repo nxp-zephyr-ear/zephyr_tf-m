@@ -185,8 +185,13 @@ Offset      Width (Bytes) Field Description
  * at offset 0x08001000.
  * Flash configuration block (FCB) is used to configure the FlexSPI interface during the boot process.
  */
+#if defined(__ARMCC_VERSION) || defined(__ICCARM__)
+#define M_BOOT_FLASH_CONF_START     (0x18000000)
+#define M_BOOT_FLASH_CONF_SIZE      (0x00001000) /* 4 KB */
+#else
 #define M_BOOT_FLASH_CONF_START     (0x18000400)
 #define M_BOOT_FLASH_CONF_SIZE      (0x00000C00) /* 3 KB */
+#endif
 
 #ifdef TFM_PARTITION_WIFI_FLASH_REGION
 #define WIFI_FLASH_REGION_START		(TFM_WIFI_FIRMWARE_ADDR)
