@@ -296,13 +296,13 @@ int32_t mpc_init_cfg(void)
                == 0);
 	enable_mem_rule_for_partition(memory_regions.non_secure_partition_base, memory_regions.non_secure_partition_limit);
 
-#ifdef TFM_PARTITION_WIFI_FLASH_REGION
+#ifdef TFM_WIFI_FLASH_REGION
 	enable_mem_rule_for_partition(memory_regions.wifi_flash_region_base, memory_regions.wifi_flash_region_limit);
-#endif /* TFM_PARTITION_WIFI_FLASH_REGION */
+#endif /* TFM_WIFI_FLASH_REGION */
 
-#ifdef TFM_PARTITION_EL2GO_DATA_IMPORT_REGION
+#ifdef TFM_EL2GO_DATA_IMPORT_REGION
 	enable_mem_rule_for_partition(memory_regions.el2go_data_import_region_base, memory_regions.el2go_data_import_region_limit);
-#endif /* TFM_PARTITION_EL2GO_DATA_IMPORT_REGION */
+#endif /* TFM_EL2GO_DATA_IMPORT_REGION */
 
     /* == SRAM region == */
     /* RAM0 to RAM18 ~1 MB, each 64 KB (32 * 2 KB) */

@@ -154,14 +154,14 @@ struct memory_region_limits {
     uint32_t non_secure_partition_limit;
     uint32_t veneer_base;
     uint32_t veneer_limit;
-#ifdef TFM_PARTITION_WIFI_FLASH_REGION
+#ifdef TFM_WIFI_FLASH_REGION
     uint32_t wifi_flash_region_base;
     uint32_t wifi_flash_region_limit;
-#endif /* TFM_PARTITION_WIFI_FLASH_REGION */
-#ifdef TFM_PARTITION_EL2GO_DATA_IMPORT_REGION
+#endif /* TFM_WIFI_FLASH_REGION */
+#ifdef TFM_EL2GO_DATA_IMPORT_REGION
     uint32_t el2go_data_import_region_base;
     uint32_t el2go_data_import_region_limit;
-#endif // TFM_PARTITION_EL2GO_DATA_IMPORT_REGION
+#endif // TFM_EL2GO_DATA_IMPORT_REGION
 
 #ifdef BL2
     uint32_t secondary_partition_base;

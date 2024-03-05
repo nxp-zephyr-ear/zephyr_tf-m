@@ -46,6 +46,14 @@ if (DEFINED USE_HARDENED_PLATFORM_INIT)
     endif()
 endif()
 
+if (DEFINED USE_TFM_EL2GO_DATA_IMPORT_REGION)
+    set(TFM_EL2GO_DATA_IMPORT_REGION_COMPILE_DEFINITION "TFM_EL2GO_DATA_IMPORT_REGION")
+endif()
+
+if (DEFINED USE_TFM_WIFI_FLASH_REGION)
+    set(TFM_WIFI_FLASH_REGION_COMPILE_DEFINITION "TFM_WIFI_FLASH_REGION")
+endif()
+
 #========================= Platform region defs ===============================#
 
 target_include_directories(platform_region_defs
@@ -54,6 +62,11 @@ target_include_directories(platform_region_defs
 )
 
 #========================= Platform common defs ===============================#
+target_compile_definitions(psa_interface
+    INTERFACE
+        ${TFM_EL2GO_DATA_IMPORT_REGION_COMPILE_DEFINITION}
+        ${TFM_WIFI_FLASH_REGION_COMPILE_DEFINITION}
+)
 
 target_compile_definitions(tfm_s
     PUBLIC
