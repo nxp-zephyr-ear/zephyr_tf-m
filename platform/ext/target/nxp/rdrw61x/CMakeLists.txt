@@ -333,9 +333,23 @@ install(DIRECTORY   ${TARGET_PLATFORM_PATH}/Device
 install(DIRECTORY   ${NXP_HAL_FILE_PATH}/rdrw61x/Native_Driver
         DESTINATION ${INSTALL_PLATFORM_NS_DIR})
 
-#copying entire native drivers from common ( psa_crypto_driver can be removed as its not used in ns)
-install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver
-        DESTINATION ${INSTALL_PLATFORM_NS_DIR})
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/els_pkc
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/lists
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/serial_manager
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/uart
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/drivers
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/utilities
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver)
 
 install(FILES       ${PLATFORM_DIR}/ext/driver/Driver_Common.h
                     ${PLATFORM_DIR}/ext/driver/Driver_Flash.h
@@ -369,3 +383,16 @@ install(DIRECTORY   ${TARGET_PLATFORM_PATH}/ns/
 install(FILES       ${TARGET_PLATFORM_PATH}/cpuarch.cmake
                     ${TARGET_PLATFORM_PATH}/config.cmake
         DESTINATION ${INSTALL_PLATFORM_NS_DIR})
+
+if (TEST_NS_ATTESTATION OR TEST_NS_T_COSE)
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/../../../../lib/ext/t_cose
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/../)
+
+install(DIRECTORY   ${NXP_HAL_FILE_PATH}/../../../../secure_fw/spm/include/boot
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR})
+
+install(FILES       ${NXP_HAL_FILE_PATH}/../../../../secure_fw/partitions/initial_attestation/attest.h
+                    ${NXP_HAL_FILE_PATH}/../../../../secure_fw/partitions/initial_attestation/attest_key.h
+                    ${NXP_HAL_FILE_PATH}/../../../../secure_fw/partitions/initial_attestation/attest_token.h
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/initial_attestation)
+endif()

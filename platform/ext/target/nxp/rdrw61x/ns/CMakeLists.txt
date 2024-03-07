@@ -95,13 +95,18 @@ target_compile_definitions(platform_ns
         ${HARDENING_COMPILE_DEFINITION}
 )
 
-
-## TODO # how to pass TFM_PARTITION_LOADER_SERVICE flag here?? 
 target_sources(tfm_api_ns
     PUBLIC
-        ${INTERFACE_SRC_DIR}/tfm_lds_api.c
-        #$<$<BOOL:${TFM_PARTITION_LOADER_SERVICE}>:${INTERFACE_SRC_DIR}/tfm_lds_api.c>
+        $<$<BOOL:${TFM_PARTITION_LOADER_SERVICE}>:${INTERFACE_SRC_DIR}/tfm_lds_api.c>
 )
+
+if (TEST_NS_ATTESTATION OR TEST_NS_T_COSE)
+target_include_directories(platform_ns
+    PUBLIC
+        initial_attestation
+        boot
+)
+endif()
 
 # Include interface headers exported by TF-M
 target_include_directories(tfm_api_ns
