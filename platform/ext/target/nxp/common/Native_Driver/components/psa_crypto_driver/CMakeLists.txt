@@ -1,5 +1,5 @@
 #-------------------------------------------------------------------------------
-# Copyright (c) 2023 NXP.
+# Copyright (c) 2023-2024 NXP
 # SPDX-License-Identifier: BSD-3-Clause
 #
 #-------------------------------------------------------------------------------
@@ -9,6 +9,10 @@ if(NOT CONFIG_BUILD_WITH_TFM)
 endif()
 
 add_library(McuxPsaCryptoDriverElsPkc) 
+
+if (NOT TFM_PLATFORM_NXP_HAL_COMP_PATH)
+    set(TFM_PLATFORM_NXP_HAL_COMP_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../)
+endif()
 
 target_compile_options(
     McuxPsaCryptoDriverElsPkc
@@ -22,7 +26,7 @@ target_link_options(
     PRIVATE
         ${TOOLCHAIN_LD_FLAGS}
 )
-
+if(CONFIG_BUILD_WITH_TFM)
 target_include_directories(McuxPsaCryptoDriverElsPkc
     PRIVATE
         # SDK driver header files
@@ -35,10 +39,17 @@ target_include_directories(McuxPsaCryptoDriverElsPkc
         # for psa driver wrapper
         ${MBEDCRYPTO_PATH}/library
 )
-
-if(NOT CONFIG_BUILD_WITH_TFM)
+else ()
 target_include_directories(McuxPsaCryptoDriverElsPkc
     PRIVATE
+        # SDK driver header files
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/../drivers/common
+        # psa/crypto.h and psa/crypto_types.h
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/../../../../../crypto/mbedtls/include
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/../../../../../crypto/mbedtls/include/psa
+        # for psa driver wrapper
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/../../../../../crypto/mbedtls/library
+
         # zephyr includes for mutex protection
         osal/zephyr
         osal/.
@@ -57,8 +68,8 @@ target_include_directories(McuxPsaCryptoDriverElsPkc
         els_pkc/oracle/inc
             
         #include the psa-driver inlcude path from clib
-        ../els_pkc/src/comps/mcuxClPsaDriver/inc
-        ../els_pkc/src/comps/mcuxClPsaDriver/inc/internal
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/inc
+        ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/inc/internal
 
         #include McuxElsPkc include directories
         "$<TARGET_PROPERTY:McuxElsPkc,INTERFACE_INCLUDE_DIRECTORIES>"
@@ -128,7 +139,7 @@ if(CONFIG_SOC_SERIES_RW6XX)
     target_include_directories(McuxPsaCryptoDriverElsPkc
         PRIVATE
             # cmsis required to build els_pkc
-            ../els_pkc/src/platforms/rw61x/cmsis_cortex_m_5_5_1/inc
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/platforms/rw61x/cmsis_cortex_m_5_5_1/inc
     )
 
     target_sources(
@@ -154,18 +165,18 @@ if(CONFIG_SOC_SERIES_RW6XX)
             els_pkc/src/transparent/mcux_psa_els_pkc_mac.c
             
             # add psa-driver source files from els_pkc(clib) in this (psa_crypto_driver)lib
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Aead.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Cipher.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_DER_functions.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Hash.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Key.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Mac.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Rsa.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Sign.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_UpdateKeyStatus.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Verify.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_export_public_key.c
-            ../els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_generate_ecp_key.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Aead.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Cipher.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_DER_functions.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Hash.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Key.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Mac.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Rsa.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Sign.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_UpdateKeyStatus.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_Verify.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_export_public_key.c
+            ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src/comps/mcuxClPsaDriver/src/mcuxClPsaDriver_generate_ecp_key.c
     )
 endif()
 

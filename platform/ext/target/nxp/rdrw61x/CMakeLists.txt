@@ -22,8 +22,6 @@ else()
     set(NXP_HAL_FILE_PATH ${TFM_PLATFORM_NXP_HAL_FILE_PATH})
 endif()
 
-
-
 # configuration options for library builds of els_pkc and psa_crypto_driver
 set(CONFIG_BUILD_WITH_TFM ON)
 set(CONFIG_SOC_SERIES_RW6XX ON)
@@ -104,6 +102,8 @@ target_compile_definitions(platform_s
     PUBLIC
         FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1
         ${HARDENING_COMPILE_DEFINITION}
+        CPU_RW612ETA2I
+        CPU_RW612ETA1I
 )
 
 target_include_directories(platform_s
@@ -188,8 +188,8 @@ target_sources(platform_s
         # ${NXP_HAL_FILE_PATH}/common/plat_attest_hal.c
 )
 
-
-add_subdirectory(${NXP_HAL_FILE_PATH}/common/Native_Driver/components/els_pkc els_pkc)
+#add_subdirectory(${NXP_HAL_FILE_PATH}/common/Native_Driver/components/els_pkc els_pkc)
+add_subdirectory(${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc els_pkc)
 
 target_link_libraries(platform_s
     PRIVATE
@@ -333,8 +333,11 @@ install(DIRECTORY   ${TARGET_PLATFORM_PATH}/Device
 install(DIRECTORY   ${NXP_HAL_FILE_PATH}/rdrw61x/Native_Driver
         DESTINATION ${INSTALL_PLATFORM_NS_DIR})
 
-install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/els_pkc
-        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+#install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/els_pkc
+#        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
+
+install(DIRECTORY   ${TFM_PLATFORM_NXP_HAL_COMP_PATH}/els_pkc/src
+        DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components/els_pkc)
 
 install(DIRECTORY   ${NXP_HAL_FILE_PATH}/common/Native_Driver/components/lists
         DESTINATION ${INSTALL_PLATFORM_NS_DIR}/Native_Driver/components)
