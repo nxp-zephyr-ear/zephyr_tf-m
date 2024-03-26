@@ -47,18 +47,18 @@ const struct memory_region_limits memory_regions = {
 
     .veneer_limit =
         (uint32_t)&REGION_NAME(Image$$, VENEER_ALIGN, $$Limit) - 1,
-#ifdef TFM_PARTITION_WIFI_FLASH_REGION
+#ifdef TFM_WIFI_FLASH_REGION
     .wifi_flash_region_base   =
         (uint32_t)&REGION_NAME(Load$$LR$$, LR_WIFI_FLASH_REGION, $$Base),
     .wifi_flash_region_limit  =
         (uint32_t)&REGION_NAME(Load$$LR$$, LR_WIFI_FLASH_REGION, $$Base) + WIFI_FLASH_REGION_SIZE - 1,
-#endif /* TFM_PARTITION_WIFI_FLASH_REGION */
-#ifdef TFM_PARTITION_EL2GO_DATA_IMPORT_REGION
+#endif /* TFM_WIFI_FLASH_REGION */
+#ifdef TFM_EL2GO_DATA_IMPORT_REGION
     .el2go_data_import_region_base   =
         (uint32_t)&REGION_NAME(Load$$LR$$, LR_EL2GO_DATA_IMPORT_REGION, $$Base),
     .el2go_data_import_region_limit  =
         (uint32_t)&REGION_NAME(Load$$LR$$, LR_EL2GO_DATA_IMPORT_REGION, $$Base) + EL2GO_DATA_IMPORT_REGION_SIZE - 1,
-#endif // TFM_PARTITION_EL2GO_DATA_IMPORT_REGION
+#endif // TFM_EL2GO_DATA_IMPORT_REGION
 #ifdef BL2
     .secondary_partition_base =
         (uint32_t)&REGION_NAME(Load$$LR$$, LR_SECONDARY_PARTITION, $$Base),
