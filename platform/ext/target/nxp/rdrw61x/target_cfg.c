@@ -322,8 +322,8 @@ int32_t mpc_init_cfg(void)
 
     /* == Region 0 == */
     /* RAM memory configuration (set according to region_defs.h and flash_layout.h) */
-    ns_region_start_id  = (NS_DATA_START - NS_RAM_DATA_ALIAS_BASE) / DATA_REGION0_SUBREGION_SIZE; /* NS starts after S */
-    ns_region_end_id    = (NS_DATA_START - NS_RAM_DATA_ALIAS_BASE + NS_DATA_SIZE) / DATA_REGION0_SUBREGION_SIZE;
+    ns_region_start_id  = (NS_DATA_START - NS_RAM_ALIAS_BASE) / DATA_REGION0_SUBREGION_SIZE; /* NS starts after S */
+    ns_region_end_id    = (NS_DATA_START - NS_RAM_ALIAS_BASE + NS_DATA_SIZE) / DATA_REGION0_SUBREGION_SIZE;
 
     for (ns_region_id = ns_region_start_id; ns_region_id < ns_region_end_id; ns_region_id++)
     {

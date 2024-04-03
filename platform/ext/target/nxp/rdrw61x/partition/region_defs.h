@@ -46,19 +46,18 @@ Offset      Width (Bytes) Field Description
 */
 
 // RAM_TOTAL_SIZE                                                 = 0x00130000
-// RESERVED_RAM_SIZE                                              = 0x00004000
-// TOTAL_RAM_SIZE: RAM_TOTAL_SIZE - RESERVED_RAM_SIZE             = 0x0012C000
+// TOTAL_RAM_SIZE: RAM_TOTAL_SIZE                                 = 0x00130000
 // TOTAL_CODE_SRAM_SIZE                                           = 0x00010000
 // S_DATA_OFFSET:TOTAL_CODE_SRAM_SIZE                             = 0x00010000
-// S_DATA_SIZE: ((TOTAL_RAM_SIZE / 2) - S_DATA_OFFSET)            = 0x00086000
-// NS_DATA_START: S_DATA_OFFSET + S_DATA_SIZE + RESERVED_RAM_SIZE = 0x0009A000
-// NS_DATA_SIZE: TOTAL_RAM_SIZE - S_DATA_SIZE - S_DATA_OFFSET     = 0x00096000
+// S_DATA_SIZE: ((TOTAL_RAM_SIZE - S_DATA_OFFSET ) / 6)           = 0x00030000
+// NS_DATA_START: S_DATA_OFFSET + S_DATA_SIZE                     = 0x00040000
+// NS_DATA_SIZE: TOTAL_RAM_SIZE - S_DATA_SIZE - S_DATA_OFFSET     = 0x000F0000
 // NS_DATA_LIMIT: NS_DATA_START + NS_DATA_SIZE - 1                = 0x0012FFFF
 
 #define S_IMAGE_PRIMARY_PARTITION_OFFSET (0x1000)
 
 /* The SRAM region [0x00000-0x10000] is reserved for RAM execution. */
-#define S_DATA_OFFSET    (TOTAL_CODE_SRAM_SIZE)
+#define S_DATA_OFFSET    (S_RAM_CODE_SIZE)
 
 #ifndef LINK_TO_SECONDARY_PARTITION
 #define NS_IMAGE_PRIMARY_PARTITION_OFFSET   (FLASH_AREA_0_OFFSET + S_IMAGE_PRIMARY_PARTITION_OFFSET + FLASH_S_PARTITION_SIZE)
@@ -85,12 +84,8 @@ Offset      Width (Bytes) Field Description
 #define S_ROM_ALIAS(x)      (S_ROM_ALIAS_BASE + (x))
 #define NS_ROM_ALIAS(x)     (NS_ROM_ALIAS_BASE + (x))
 
-#define S_RAM_CODE_ALIAS(x)      (S_RAM_CODE_ALIAS_BASE + (x))
-#define NS_RAM_CODE_ALIAS(x)     (NS_RAM_CODE_ALIAS_BASE + (x))
-
-#define S_RAM_DATA_ALIAS(x)      (S_RAM_DATA_ALIAS_BASE + (x))
-#define NS_RAM_DATA_ALIAS(x)     (NS_RAM_DATA_ALIAS_BASE + (x))
-
+#define S_RAM_ALIAS(x)      (S_RAM_ALIAS_BASE + (x))
+#define NS_RAM_ALIAS(x)     (NS_RAM_ALIAS_BASE + (x))
 
 /* Secure regions */
 #define S_IMAGE_PRIMARY_AREA_OFFSET     (S_IMAGE_PRIMARY_PARTITION_OFFSET + BL2_HEADER_SIZE)
@@ -98,8 +93,10 @@ Offset      Width (Bytes) Field Description
 #define S_CODE_SIZE                     (IMAGE_S_CODE_SIZE)
 #define S_CODE_LIMIT                    (S_CODE_START + S_CODE_SIZE - 1)
 
-#define S_DATA_START                    (S_RAM_DATA_ALIAS(S_DATA_OFFSET+RESERVED_RAM_SIZE))
-#define S_DATA_SIZE                     ((TOTAL_RAM_SIZE / 2) - S_DATA_OFFSET)
+#define S_DATA_START                    (S_RAM_ALIAS(S_DATA_OFFSET))
+/* Note, instead of having half SRAM split for secure and non-secure, lets assign a fixed size for secure region 
+and assign bit more to non secure region. 1/6th size is reserved for secure instead of 1/2.*/
+#define S_DATA_SIZE                     ((TOTAL_RAM_SIZE - S_DATA_OFFSET ) / 6)
 #define S_DATA_LIMIT                    (S_DATA_START + S_DATA_SIZE - 1)
 
 /* Size of vector table: 144 interrupt handlers(see g_pfnVectors definition) + 4 bytes MPS initial value ((144*4 + 4) = 580 --> 0x244) */
@@ -111,7 +108,7 @@ Offset      Width (Bytes) Field Description
 #define NS_CODE_SIZE                    (IMAGE_NS_CODE_SIZE)
 #define NS_CODE_LIMIT                   (NS_CODE_START + NS_CODE_SIZE - 1)
 
-#define NS_DATA_START                   (NS_RAM_DATA_ALIAS(S_DATA_OFFSET + S_DATA_SIZE+RESERVED_RAM_SIZE))
+#define NS_DATA_START                   (NS_RAM_ALIAS(S_DATA_OFFSET + S_DATA_SIZE))
 #define NS_DATA_SIZE                    (TOTAL_RAM_SIZE - S_DATA_SIZE - S_DATA_OFFSET)
 #define NS_DATA_LIMIT                   (NS_DATA_START + NS_DATA_SIZE - 1)
 
@@ -157,9 +154,9 @@ Offset      Width (Bytes) Field Description
 #define SECONDARY_PARTITION_SIZE    (FLASH_S_PARTITION_SIZE + FLASH_NS_PARTITION_SIZE)
 
 /* Code SRAM area */
-#define TOTAL_CODE_SRAM_SIZE     (0x10000) /* SRAM X region */
-#define S_CODE_SRAM_ALIAS_BASE   (0x10000000)
-#define NS_CODE_SRAM_ALIAS_BASE  (0x00000000)
+#define S_RAM_CODE_SIZE     (0x10000) /* SRAM X region */
+#define S_RAM_CODE_START    (0x10000000)
+#define NS_RAM_CODE_START   (0x00000000)
 
 #ifdef BL2
 /* Bootloader regions */

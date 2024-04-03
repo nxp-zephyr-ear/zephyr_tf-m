@@ -20,9 +20,9 @@
 
 /* Flash layout without BL2:
  *
- * 0x00000000 
+ * 0x00000000
  * 0x00000400 Flash Config Block
- * 0x00001000 Secure code 
+ * 0x00001000 Secure code
  * 0x000A0000 Non-Secure code
  * 0x001A0000 Protected Storage area
  * 0x001C0000 Internal Trusted Storage area
@@ -40,7 +40,7 @@
 /* Size of a Secure and of a Non-secure image */
 #define FLASH_IMAGE_HEADER_SIZE         (0x1000)
 #define FLASH_S_PARTITION_SIZE          (0xA0000 - FLASH_IMAGE_HEADER_SIZE)  /* S partition: 640 kB - 4KB Offset */
-#define FLASH_NS_PARTITION_SIZE         (0x100000)           /* NS partition: 1 MB*/
+#define FLASH_NS_PARTITION_SIZE         (0x300000)           /* NS partition: 3 MB*/
 
 /* Sector size (erase) */
 #define FLASH_AREA_IMAGE_SECTOR_SIZE    (1024 * 4)          /* Sector (4K-byte)*/
@@ -64,7 +64,7 @@
 #define FLASH_AREA_0_ID            (1)
 #define FLASH_AREA_0_OFFSET        (0x0)
 #define FLASH_AREA_0_SIZE          (FLASH_IMAGE_HEADER_SIZE + FLASH_S_PARTITION_SIZE + FLASH_NS_PARTITION_SIZE + FLASH_SB_TAIL)
-                                    
+
 /* Not used */
 #define FLASH_AREA_SCRATCH_ID      (FLASH_AREA_0_ID + 1)
 #define FLASH_AREA_SCRATCH_OFFSET  (FLASH_AREA_0_OFFSET + FLASH_AREA_0_SIZE)
@@ -122,7 +122,7 @@
 /* Smallest flash programmable unit in bytes */
 #define TFM_HAL_PS_PROGRAM_UNIT         (FLASH_AREA_PROGRAM_SIZE)
 #define PS_FLASH_NAND_BUF_SIZE          (FLASH_AREA_IMAGE_SECTOR_SIZE * TFM_HAL_PS_SECTORS_PER_BLOCK)
-                                       
+
 
 /* Internal Trusted Storage (ITS) Service definitions
  * Note: Further documentation of these definitions can be found in the TF-M ITS Integration Guide. The ITS should be
@@ -152,7 +152,6 @@
 
 /* OTP / NV counter definitions */
 #define OTP_NV_COUNTERS_FLASH_DEV               (Driver_FLASH0)
-
 #define TFM_OTP_NV_COUNTERS_AREA_SIZE           (FLASH_OTP_NV_COUNTERS_AREA_SIZE / 2)
 #define TFM_OTP_NV_COUNTERS_AREA_ADDR           (FLASH_OTP_NV_COUNTERS_AREA_OFFSET)
 #define TFM_OTP_NV_COUNTERS_SECTOR_SIZE         (FLASH_OTP_NV_COUNTERS_SECTOR_SIZE)
@@ -165,22 +164,16 @@
 #define TFM_EL2GO_NV_DATA_IMPORT_ADDR  (0x084A0000)
 #define TFM_EL2GO_NV_DATA_IMPORT_SIZE  (0x00060000)
 
-
 /* Use Flash memory to store Code data */
 /* 0x08000000 is the FlexSPI memory-mapped AHB address */
 #define S_ROM_ALIAS_BASE    (0x18000000)
 #define NS_ROM_ALIAS_BASE   (0x08000000)
 
 /* Use SRAM memory to store RW data */
-#define S_RAM_CODE_ALIAS_BASE    (0x10000000)    /* Shared RAM via the CM33 code bus (secure access) */
-#define NS_RAM_CODE_ALIAS_BASE   (0x00000000)    /* Shared RAM via the CM33 code bus (non-secure access). */
-
-#define S_RAM_DATA_ALIAS_BASE    (0x30000000)    /* Shared RAM via the CM33 data bus (secure access) */
-#define NS_RAM_DATA_ALIAS_BASE   (0x20000000)    /* Shared RAM via the CM33 data bus (non-secure access). */
-
-#define RESERVED_RAM_SIZE   (0x00004000)  /* Reserved SRAM0(16KB): 8KB Retention RAM. 8KB For PKC */
+#define S_RAM_ALIAS_BASE    (0x30000000)    /* Shared RAM via the CM33 data bus (secure access). */
+#define NS_RAM_ALIAS_BASE   (0x20000000)    /* Shared RAM via the CM33 data bus (non-secure access). */
 
 #define TOTAL_ROM_SIZE      (FLASH_TOTAL_SIZE)
-#define TOTAL_RAM_SIZE      (RAM_TOTAL_SIZE - RESERVED_RAM_SIZE)
+#define TOTAL_RAM_SIZE      (RAM_TOTAL_SIZE)
 
 #endif /* __FLASH_LAYOUT_H__ */
