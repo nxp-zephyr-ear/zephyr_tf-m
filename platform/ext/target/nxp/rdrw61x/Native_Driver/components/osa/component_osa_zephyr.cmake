@@ -1,4 +1,9 @@
-# Add set(CONFIG_USE_component_osa_zephyr true) in config.cmake to use this component
+#-------------------------------------------------------------------------------
+# Copyright (c) 2024 NXP
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+#-------------------------------------------------------------------------------
 
 include_guard(GLOBAL)
 message("${CMAKE_CURRENT_LIST_FILE} component is included.")

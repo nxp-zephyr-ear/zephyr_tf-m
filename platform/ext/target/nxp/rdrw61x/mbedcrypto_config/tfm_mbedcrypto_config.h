@@ -9,6 +9,7 @@
  */
 /*
  *  Copyright (C) 2006-2022, ARM Limited, All Rights Reserved
+ *  Copyright 2023-2024 NXP
  *  SPDX-License-Identifier: Apache-2.0
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"); you may

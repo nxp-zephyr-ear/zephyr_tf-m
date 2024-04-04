@@ -1,6 +1,6 @@
 #-------------------------------------------------------------------------------
 # Copyright (c) 2023, Arm Limited. All rights reserved.
-# Copyright 2024 NXP.
+# Copyright 2024 NXP
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #

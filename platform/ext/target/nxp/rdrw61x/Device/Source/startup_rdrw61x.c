@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2022 Arm Limited. All rights reserved.
+ * Copyright 2023-2024 NXP
  *
  * SPDX-License-Identifier: Apache-2.0
  *

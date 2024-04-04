@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2021-2023, Arm Limited. All rights reserved.
- * Copyright 2020-2023 NXP.
+ * Copyright 2020-2024 NXP
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
